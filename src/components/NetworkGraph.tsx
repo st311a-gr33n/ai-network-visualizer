@@ -207,7 +207,7 @@ const NetworkGraph: React.FC<NetworkGraphProps> = ({ data, hoveredNodeId, setHov
         .attr("class", "hover-ring")
         .attr("r", 12)
         .attr("fill", "none")
-        .attr("stroke", "#55B6C2") // accent color
+        .attr("stroke", "#d6c2ef") // accent color
         .attr("stroke-width", 2)
         .attr("stroke-opacity", 0)
         .style("pointer-events", "none")
