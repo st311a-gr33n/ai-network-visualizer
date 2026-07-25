@@ -96,19 +96,19 @@ Export scan results as `.txt` files from [Angry IP Scanner](https://angryip.org/
    ```
 3. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 
 ### Running the App
 
 **Development mode** (with hot reload):
 ```bash
-npm run electron:dev
+pnpm electron:dev
 ```
 
 **Web-only development** (without Electron):
 ```bash
-npm run dev
+pnpm dev
 ```
 Then open http://localhost:3000 in your browser.
 
@@ -116,19 +116,19 @@ Then open http://localhost:3000 in your browser.
 
 Build for your current platform:
 ```bash
-npm run electron:build
+pnpm electron:build
 ```
 
 Build for specific platforms:
 ```bash
 # Linux (AppImage, deb)
-npm run electron:build:linux
+pnpm electron:build:linux
 
 # Windows (NSIS installer, portable)
-npm run electron:build:win
+pnpm electron:build:win
 
 # macOS (DMG, zip)
-npm run electron:build:mac
+pnpm electron:build:mac
 ```
 
 Built packages will be available in the `release/` directory.

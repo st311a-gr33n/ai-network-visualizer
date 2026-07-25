@@ -11,16 +11,26 @@
   "homepage": "https://github.com/AugustGray/Electron_Network-Visualizer",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron",
+      "esbuild",
+      "@google/genai",
+      "protobufjs",
+      "phantomjs-prebuilt"
+    ]
+  },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && npm run build:electron",
+    "build": "vite build && pnpm build:electron",
     "build:electron": "mkdir -p dist-electron && tsc -p electron/tsconfig.json && cp electron/preload.cjs dist-electron/",
     "preview": "vite preview",
-    "electron:dev": "npm run build:electron && concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron:build": "npm run build && electron-builder",
-    "electron:build:linux": "npm run build && electron-builder --linux",
-    "electron:build:win": "npm run build && electron-builder --win",
-    "electron:build:mac": "npm run build && electron-builder --mac"
+    "electron:dev": "pnpm build:electron && concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:build": "pnpm build && electron-builder",
+    "electron:build:linux": "pnpm build && electron-builder --linux",
+    "electron:build:win": "pnpm build && electron-builder --win",
+    "electron:build:mac": "pnpm build && electron-builder --mac"
   },
   "dependencies": {
     "@google/genai": "^1.29.1",
