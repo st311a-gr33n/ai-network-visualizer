@@ -1,0 +1,60 @@
+/* Nerd Font Icon Support for Network Graph
+ *
+ * This file loads the bundled Symbols Nerd Font to ensure icons
+ * render correctly regardless of user's installed fonts.
+ */
+
+/* Load the bundled Symbols Nerd Font */
+@font-face {
+  font-family: 'Symbols Nerd Font';
+  src: url('./assets/fonts/SymbolsNerdFont-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+/* Base icon class that ensures proper rendering */
+[class*="nf-"] {
+  font-family: 'Symbols Nerd Font', 'FiraCode Nerd Font', monospace;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Font Awesome icons */
+.nf-fa-server::before { content: "\f233"; }
+.nf-fa-mobile_phone::before { content: "\f10b"; }
+.nf-fa-tablet_screen_button::before { content: "\f3fa"; }
+.nf-fa-laptop::before { content: "\f109"; }
+.nf-fa-desktop::before { content: "\f108"; }
+
+/* Material Design icons */
+.nf-md-access_point::before { content: "\f0003"; }
+.nf-md-web::before { content: "\f059f"; }
+.nf-md-wall_fire::before { content: "\f1611"; }
+.nf-md-printer::before { content: "\f042a"; }
+.nf-md-switch::before { content: "\f04e4"; }
+.nf-md-webcam::before { content: "\f05a0"; }
+.nf-md-nas::before { content: "\f08f3"; }
+.nf-md-line_scan::before { content: "\f0624"; }
+
+/* Weather icons (fallback) */
+.nf-weather-na::before { content: "\f07b4"; }
+
+/* Alternative: If you prefer to use the Unicode characters directly in CSS */
+/*
+.nf-fa-server::before { content: ""; }
+.nf-md-access_point::before { content: "󰀃"; }
+.nf-md-web::before { content: "󰖟"; }
+.nf-md-wall_fire::before { content: "󱨑"; }
+.nf-md-printer::before { content: "󰐪"; }
+.nf-fa-mobile_phone::before { content: ""; }
+.nf-fa-tablet_screen_button::before { content: ""; }
+.nf-fa-laptop::before { content: ""; }
+.nf-fa-desktop::before { content: ""; }
+.nf-md-switch::before { content: "󰓤"; }
+.nf-md-webcam::before { content: "󰖠"; }
+.nf-md-nas::before { content: "󰣳"; }
+.nf-md-line_scan::before { content: "󰘤"; }
+.nf-weather-na::before { content: ""; }
+*/

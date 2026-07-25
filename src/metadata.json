@@ -1,0 +1,5 @@
+{
+  "name": "AI Network Visualizer",
+  "description": "Upload network logs or text files to generate an interactive network map. An AI assistant identifies devices, their roles, and connections to create a visual graph.",
+  "requestFramePermissions": []
+}

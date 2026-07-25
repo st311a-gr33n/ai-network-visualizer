@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; connect-src 'self' https://generativelanguage.googleapis.com https://api.openai.com http://localhost:*; img-src 'self' data:;">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>AI Network Visualizer</title>
+    <link href="https://cdn.jsdelivr.net/npm/@nerdfonts/firacode@3.2.1/css/nerdfonts-generated.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              'sans': ['ui-sans-serif', 'system-ui'],
+              'nerd': ['Symbols Nerd Font', 'FiraCode Nerd Font', 'monospace']
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.3s ease-in-out',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: 0, transform: 'translateY(-5px)' },
+                '100%': { opacity: 1, transform: 'translateY(0)' },
+              }
+            },
+            colors: {
+              'gray-900': '#121212',
+              'gray-800': '#1e1e1e',
+              'gray-700': '#2d2d2d',
+              'gray-600': '#3c3c3c',
+              'gray-500': '#6b7280',
+              'gray-400': '#a0a0a0',
+              'gray-300': '#d1d5db',
+              'gray-200': '#e0e0e0',
+              accent: '#55B6C2',
+              ont: '#98C379',
+              firewall: '#E06B74',
+              scanner: '#E5C07A',
+              server: '#E0B8FF',
+              other: '#a0a0a0'
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="/index.css">
+    <style>
+      /* Enable touch support for D3.js zoom/drag */
+      svg {
+        touch-action: none;
+      }
+      .network-graph-container {
+        touch-action: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-gray-200 antialiased">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

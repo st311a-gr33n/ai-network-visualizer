@@ -1,0 +1,143 @@
+{
+  "nodes": [
+    {
+      "id": "B7:D3:E0:F4:A5:C8",
+      "name": "Router-B",
+      "role": "Router",
+      "ipAddress": "192.168.1.100",
+      "macAddress": "B7:D3:E0:F4:A5:C8",
+      "vendor": "Netgear",
+      "openPorts": [],
+      "ping": "1 ms"
+    },
+    {
+      "id": "F1:2B:C9:7E:3D:A8",
+      "name": "Printer-2",
+      "role": "Printer",
+      "ipAddress": "192.168.1.68",
+      "macAddress": "F1:2B:C9:7E:3D:A8",
+      "vendor": "HP",
+      "openPorts": [],
+      "ping": "0 ms"
+    },
+    {
+      "id": "67:89:AB:CD:12:54",
+      "name": "Switch-C",
+      "role": "Switch",
+      "ipAddress": "192.168.1.70",
+      "macAddress": "67:89:AB:CD:12:54",
+      "vendor": "Cisco",
+      "openPorts": [],
+      "ping": "1 ms"
+    },
+    {
+      "id": "E3:C1:F5:D8:B9:A7",
+      "name": "Server-2",
+      "role": "Server",
+      "ipAddress": "192.168.1.69",
+      "macAddress": "E3:C1:F5:D8:B9:A7",
+      "vendor": "Dell",
+      "openPorts": [],
+      "ping": "1 ms"
+    },
+    {
+      "id": "A9:D5:E1:F7:93:B2",
+      "name": "ONT-1",
+      "role": "ONT",
+      "ipAddress": "192.168.1.129",
+      "macAddress": "A9:D5:E1:F7:93:B2",
+      "vendor": "ZTE",
+      "openPorts": [],
+      "ping": "0 ms"
+    },
+    {
+      "id": "D4:F1:B8:A3:59:C6",
+      "name": "NAS-4",
+      "role": "NAS",
+      "ipAddress": "192.168.1.66",
+      "macAddress": "D4:F1:B8:A3:59:C6",
+      "vendor": "Synology",
+      "openPorts": [
+        "80",
+        "443"
+      ],
+      "ping": "2000 ms"
+    },
+    {
+      "id": "E3:F2:D0:A7:B5:9C",
+      "name": "Webcam-3",
+      "role": "Webcam",
+      "ipAddress": "192.168.1.102",
+      "macAddress": "E3:F2:D0:A7:B5:9C",
+      "vendor": "Logitech",
+      "openPorts": [
+        "80",
+        "443",
+        "8080"
+      ],
+      "ping": "2000 ms"
+    },
+    {
+      "id": "A4:9B:E6:C3:F1:7D",
+      "name": "Firewall-1",
+      "role": "Firewall",
+      "ipAddress": "192.168.1.104",
+      "macAddress": "A4:9B:E6:C3:F1:7D",
+      "vendor": "SonicWall",
+      "openPorts": [
+        "80",
+        "443",
+        "8080"
+      ],
+      "ping": "2000 ms"
+    },
+    {
+      "id": "B5:A1:E9:C2:F0:D8",
+      "name": "Router-3",
+      "role": "Router",
+      "ipAddress": "192.168.1.254",
+      "macAddress": "B5:A1:E9:C2:F0:D8",
+      "vendor": "TP-Link",
+      "openPorts": [],
+      "ping": "0 ms"
+    }
+  ],
+  "links": [
+    {
+      "source": "A4:9B:E6:C3:F1:7D",
+      "target": "A9:D5:E1:F7:93:B2"
+    },
+    {
+      "source": "B7:D3:E0:F4:A5:C8",
+      "target": "A4:9B:E6:C3:F1:7D"
+    },
+    {
+      "source": "67:89:AB:CD:12:54",
+      "target": "67:89:AB:CD:12:54"
+    },
+    {
+      "source": "67:89:AB:CD:12:54",
+      "target": "F1:2B:C9:7E:3D:A8"
+    },
+    {
+      "source": "67:89:AB:CD:12:54",
+      "target": "D4:F1:B8:A3:59:C6"
+    },
+    {
+      "source": "67:89:AB:CD:12:54",
+      "target": "E3:C1:F5:D8:B9:A7"
+    },
+    {
+      "source": "67:89:AB:CD:12:54",
+      "target": "E3:F2:D0:A7:B5:9C"
+    },
+    {
+      "source": "B5:A1:E9:C2:F0:D8",
+      "target": "A4:9B:E6:C3:F1:7D"
+    },
+    {
+      "source": "B5:A1:E9:C2:F0:D8",
+      "target": "67:89:AB:CD:12:54"
+    }
+  ]
+}

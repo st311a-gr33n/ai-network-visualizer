@@ -1,0 +1,55 @@
+/* Base styles for Network Visualizer */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3c3c3c;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(85, 182, 194, 0.3);
+  color: inherit;
+}
+
+/* Focus styling */
+:focus-visible {
+  outline: 2px solid #55B6C2;
+  outline-offset: 2px;
+}
+
+/* Disable text selection on drag */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
