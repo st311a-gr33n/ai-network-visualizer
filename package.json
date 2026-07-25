@@ -4,8 +4,8 @@
   "description": "AI-powered network map visualizer built with Electron and React",
   "main": "dist-electron/main.js",
   "author": {
-    "name": "AugustGray",
-    "email": "63071966+AugustGray@users.noreply.github.com"
+    "name": "st3114 gr33n",
+    "email": "155259551+st311a-gr33n@users.noreply.github.com"
   },
   "license": "MIT",
   "homepage": "https://github.com/AugustGray/Electron_Network-Visualizer",
