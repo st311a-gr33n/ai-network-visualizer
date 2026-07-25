@@ -19,6 +19,7 @@ import Loader from './components/Loader';
 import SettingsModal from './components/SettingsModal';
 import PrivacyNoticeModal from './components/PrivacyNoticeModal';
 import LiveModePanel from './components/LiveModePanel';
+import DotGridBackground from './components/DotGridBackground';
 import { UploadIcon, PlusIcon, DownloadIcon, PencilIcon, GearIcon, PrivacyIcon, SignalIcon } from './components/Icons';
 import './nerd-font-icons.css';
 import appLogoSvg from './public/trayicon_AI.svg';
@@ -267,11 +268,6 @@ const App: React.FC = () => {
       unsubStopped?.();
     };
   }, []);
-
-  const canvasStyle = {
-    backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.08) 1px, transparent 0)',
-    backgroundSize: '25px 25px',
-  };
 
   const handleFileSelect = useCallback(async (file: File) => {
     if (!file) return;
@@ -622,7 +618,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-screen bg-gray-900 text-gray-200 flex flex-col relative overflow-hidden" style={canvasStyle}>
+    <div className="h-screen w-screen bg-gray-900 text-gray-200 flex flex-col relative overflow-hidden">
+      <DotGridBackground isActive={isLiveModeActive} />
       <header className="w-full max-w-6xl mx-auto flex items-center justify-between p-4 sm:p-6 z-30">
         <div className="flex items-center gap-3">
           <img

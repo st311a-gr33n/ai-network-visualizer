@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@google/genai": "^1.29.1",
+    "animejs": "^4.5.0",
     "d3": "^7.9.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
