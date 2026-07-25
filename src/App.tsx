@@ -199,6 +199,8 @@ const App: React.FC = () => {
     return { provider: 'local' };
   });
 
+  const mergeFileInputRef = useRef<HTMLInputElement>(null);
+
   // Tracks whether we've finished loading the API key from secure storage.
   // Prevents the save effect from firing prematurely during initial load.
   const aiConfigLoaded = useRef(false);
