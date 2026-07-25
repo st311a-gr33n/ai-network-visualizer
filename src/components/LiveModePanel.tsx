@@ -200,7 +200,7 @@ const LiveModePanel: React.FC<LiveModePanelProps> = ({
               <button
                 onClick={handleStartClick}
                 disabled={nmapAvailable === false || !window.electronAPI}
-                className="px-4 py-2 bg-accent hover:bg-accent/90 text-white text-sm font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-btn hover:bg-btn/90 text-white text-sm font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Start Scan
               </button>

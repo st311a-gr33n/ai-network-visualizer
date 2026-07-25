@@ -40,7 +40,7 @@ const PrivacyNoticeModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         <div className="p-4 bg-gray-700/50 flex justify-end gap-3 rounded-b-lg">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-accent hover:bg-accent/90 text-white text-sm font-medium rounded-md transition-colors"
+            className="px-4 py-2 bg-btn hover:bg-btn/90 text-white text-sm font-medium rounded-md transition-colors"
           >
             Got it
           </button>

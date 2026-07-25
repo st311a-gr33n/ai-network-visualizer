@@ -717,7 +717,7 @@ const App: React.FC = () => {
                   <>
                     <button
                         onClick={() => mergeFileInputRef.current?.click()}
-                        className="flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent/90 text-white rounded-md transition-colors duration-200"
+                        className="flex items-center gap-2 px-4 py-2 bg-btn hover:bg-btn/90 text-white rounded-md transition-colors duration-200"
                     >
                         <PlusIcon className="w-5 h-5" />
                         Scan
@@ -731,7 +731,7 @@ const App: React.FC = () => {
                     </button>
                     <button
                         onClick={() => setIsEditMode(prev => !prev)}
-                        className={`flex items-center gap-2 px-4 py-2 text-white rounded-md transition-colors duration-200 ${isEditMode ? 'bg-accent hover:bg-accent/90' : 'bg-gray-700 hover:bg-gray-600'}`}
+                        className={`flex items-center gap-2 px-4 py-2 text-white rounded-md transition-colors duration-200 ${isEditMode ? 'bg-btn hover:bg-btn/90' : 'bg-gray-700 hover:bg-gray-600'}`}
                     >
                         <PencilIcon className="w-5 h-5" />
                         Edit

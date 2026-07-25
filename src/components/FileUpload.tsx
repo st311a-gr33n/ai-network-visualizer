@@ -70,7 +70,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, onLoadDemo, onCre
       <div className="mt-6 flex items-center justify-center gap-3">
         <button
           onClick={onCreateNew}
-          className="flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent/90 text-white text-sm rounded-md transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-btn hover:bg-btn/90 text-white text-sm rounded-md transition-colors"
         >
           <PlusIcon className="w-4 h-4" />
           Create New Map
