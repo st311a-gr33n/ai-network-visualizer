@@ -1,48 +1,47 @@
-import { GoogleGenAI, Type } from "@google/genai";
 import type { GraphData, NodeData, AIConfig } from '../types';
 
 const responseSchema = {
-    type: Type.OBJECT,
+    type: "object",
     properties: {
         nodes: {
-            type: Type.ARRAY,
+            type: "array",
             description: "A list of all identified network devices or entities.",
             items: {
-                type: Type.OBJECT,
+                type: "object",
                 properties: {
                     id: {
-                        type: Type.STRING,
+                        type: "string",
                         description: "A unique identifier for the device. CRITICAL: Use the MAC address for the ID if available. Otherwise, use the IP address as a fallback."
                     },
                     name: {
-                        type: Type.STRING,
+                        type: "string",
                         description: "A human-readable name for the device (e.g., 'Gateway Router', 'WebServer01')."
                     },
                     role: {
-                        type: Type.STRING,
+                        type: "string",
                         description: "The inferred role of the device. Possible roles: 'Router', 'Access Point', 'Switch', 'Server', 'Client', 'Smartphone', 'Tablet', 'Laptop', 'PC', 'Printer', 'Webcam', 'NAS', 'Firewall', 'ONT', 'Scanner', 'Other'."
                     },
                     ipAddress: {
-                        type: Type.STRING,
+                        type: "string",
                         description: "The IP address of the device, if available."
                     },
                     macAddress: {
-                        type: Type.STRING,
+                        type: "string",
                         description: "The MAC address of the device, if available."
                     },
                     vendor: {
-                        type: Type.STRING,
+                        type: "string",
                         description: "The manufacturer or vendor of the device, inferred from the MAC address if possible (e.g., 'Apple', 'Cisco')."
                     },
                     openPorts: {
-                        type: Type.ARRAY,
+                        type: "array",
                         description: "A list of open TCP/UDP ports discovered on the device as strings, if available.",
                         items: {
-                            type: Type.STRING
+                            type: "string"
                         }
                     },
                     ping: {
-                        type: Type.STRING,
+                        type: "string",
                         description: "The ping latency to the device, if available (e.g., '23ms')."
                     }
                 },
@@ -50,17 +49,17 @@ const responseSchema = {
             },
         },
         links: {
-            type: Type.ARRAY,
+            type: "array",
             description: "A list of connections between the identified devices.",
             items: {
-                type: Type.OBJECT,
+                type: "object",
                 properties: {
                     source: {
-                        type: Type.STRING,
+                        type: "string",
                         description: "The 'id' of the source node for the connection."
                     },
                     target: {
-                        type: Type.STRING,
+                        type: "string",
                         description: "The 'id' of the target node for the connection."
                     }
                 },
@@ -300,13 +299,13 @@ export async function analyzeNetworkLog(
             throw error;
         }
 
-    } else if (config.provider === 'openai') {
+    } else { // 'deepseek' provider
         const apiKey = config.apiKey;
         if (!apiKey) {
-            throw new Error("OpenAI API key not provided. Please enter your key in the settings menu.");
+            throw new Error("DeepSeek API key not provided. Please enter your key in the settings menu.");
         }
-        const model = config.model || 'gpt-4o';
-        const url = 'https://api.openai.com/v1/chat/completions';
+        const model = config.model || 'deepseek-v4-flash';
+        const url = 'https://api.deepseek.com/v1/chat/completions';
 
         try {
             const response = await fetch(url, {
@@ -329,46 +328,20 @@ export async function analyzeNetworkLog(
             if (!response.ok) {
                 const errorBody = await response.json();
                 const errorMessage = errorBody?.error?.message || JSON.stringify(errorBody);
-                throw new Error(`OpenAI API returned an error: ${response.status} ${response.statusText}. \nDetails: ${errorMessage}`);
+                throw new Error(`DeepSeek API returned an error: ${response.status} ${response.statusText}. \nDetails: ${errorMessage}`);
             }
 
             const data = await response.json();
             const jsonText = data.choices[0].message.content;
-            
+
             return JSON.parse(jsonText) as GraphData;
 
         } catch (error) {
-            console.error("Error calling OpenAI API:", error);
+            console.error("Error calling DeepSeek API:", error);
             if (error instanceof Error && (error.message.includes('API key') || error.message.includes('authentication'))) {
-                throw new Error("The provided OpenAI API key appears to be invalid or has expired.");
+                throw new Error("The provided DeepSeek API key appears to be invalid or has expired.");
             }
             throw error;
-        }
-    } else { // 'google' provider
-        const apiKey = config.apiKey;
-        if (!apiKey) {
-            throw new Error("Google AI API key not provided. Please enter your key in the settings menu.");
-        }
-        const ai = new GoogleGenAI({ apiKey });
-
-        try {
-            const response = await ai.models.generateContent({
-                model: "gemini-2.5-flash",
-                contents: prompt,
-                config: {
-                    responseMimeType: "application/json",
-                    responseSchema: responseSchema,
-                    temperature: 0.1
-                },
-            });
-
-            const jsonText = response.text.trim();
-            const data = JSON.parse(jsonText);
-            return data as GraphData;
-
-        } catch (error) {
-            console.error("Error calling Gemini API:", error);
-            throw new Error("Failed to get a valid response from the AI. This could be due to an invalid API key, network issues, or the model returning an unexpected format.");
         }
     }
 }

@@ -17,6 +17,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
   platform: process.platform,
   isElectron: true,
 
+  // Secure storage (safeStorage-backed, OS-level encryption)
+  secureStoreSet: (key, value) => ipcRenderer.invoke('secure-store:set', key, value),
+  secureStoreGet: (key) => ipcRenderer.invoke('secure-store:get', key),
+  secureStoreDelete: (key) => ipcRenderer.invoke('secure-store:delete', key),
+
   // Nmap / Live Scan operations
   nmapCheck: () => ipcRenderer.invoke('nmap:check'),
   liveScanStart: (config) => ipcRenderer.invoke('live-scan:start', config),

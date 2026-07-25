@@ -1,7 +1,7 @@
 
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { analyzeNetworkLog } from './services/geminiService';
+import { analyzeNetworkLog } from './services/aiService';
 import { parseNmapXml, nmapToStructuredText } from './services/nmapParser';
 import { convertNmapToGraphData, mergeNmapWithGraphData } from './services/graphConverter';
 import {
@@ -199,14 +199,81 @@ const App: React.FC = () => {
     return { provider: 'local' };
   });
 
-  const mergeFileInputRef = useRef<HTMLInputElement>(null);
+  // Tracks whether we've finished loading the API key from secure storage.
+  // Prevents the save effect from firing prematurely during initial load.
+  const aiConfigLoaded = useRef(false);
+
+  // On mount: load API key from secure storage (Electron) or localStorage (web).
+  // Also migrates any existing localStorage key into secure storage.
+  useEffect(() => {
+    const loadKey = async () => {
+      if (window.electronAPI?.secureStoreGet) {
+        try {
+          const secureKey = await window.electronAPI.secureStoreGet('aiConfig.apiKey');
+          if (secureKey !== null) {
+            // Key already in secure storage — use it
+            setAiConfig(prev => ({ ...prev, apiKey: secureKey }));
+          } else {
+            // No key in secure storage — check localStorage for an existing key to migrate
+            const savedConfig = localStorage.getItem('aiConfig');
+            if (savedConfig) {
+              try {
+                const parsed = JSON.parse(savedConfig);
+                if (parsed.apiKey) {
+                  await window.electronAPI.secureStoreSet('aiConfig.apiKey', parsed.apiKey);
+                  setAiConfig(prev => ({ ...prev, apiKey: parsed.apiKey }));
+                  // Scrub key from localStorage
+                  const { apiKey, ...rest } = parsed;
+                  localStorage.setItem('aiConfig', JSON.stringify(rest));
+                }
+              } catch { /* ignore parse errors */ }
+            }
+          }
+        } catch (err) {
+          console.error('Failed to load API key from secure storage:', err);
+        }
+      }
+      // In web mode: apiKey is already in the config loaded from localStorage above
+      aiConfigLoaded.current = true;
+    };
+    loadKey();
+  }, []);
 
   useEffect(() => {
+    // Don't persist until the initial load is complete
+    if (!aiConfigLoaded.current) return;
+
+    const { apiKey, ...safeConfig } = aiConfig;
+
+    // Always persist non-sensitive config to localStorage (both Electron and web)
     try {
-        localStorage.setItem('aiConfig', JSON.stringify(aiConfig));
+      localStorage.setItem('aiConfig', JSON.stringify(safeConfig));
     } catch (e) {
-        console.error("Failed to save AI config to localStorage", e);
+      console.error("Failed to save AI config to localStorage", e);
     }
+
+    // Persist the API key
+    const persistKey = async () => {
+      if (window.electronAPI?.secureStoreSet) {
+        try {
+          if (apiKey) {
+            await window.electronAPI.secureStoreSet('aiConfig.apiKey', apiKey);
+          } else {
+            await window.electronAPI.secureStoreDelete('aiConfig.apiKey');
+          }
+        } catch (err) {
+          console.error('Failed to save API key to secure storage:', err);
+        }
+      } else {
+        // Web mode: store everything in localStorage (including apiKey)
+        try {
+          localStorage.setItem('aiConfig', JSON.stringify(aiConfig));
+        } catch (e) {
+          console.error("Failed to save AI config to localStorage", e);
+        }
+      }
+    };
+    persistKey();
   }, [aiConfig]);
 
   // Check nmap availability on mount (Electron only)

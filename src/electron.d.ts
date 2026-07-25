@@ -46,6 +46,11 @@ interface ElectronAPI {
   platform: string;
   isElectron: boolean;
 
+  // Secure storage (safeStorage-backed, OS-level encryption)
+  secureStoreSet: (key: string, value: string) => Promise<void>;
+  secureStoreGet: (key: string) => Promise<string | null>;
+  secureStoreDelete: (key: string) => Promise<void>;
+
   // Nmap / Live Scan operations
   nmapCheck: () => Promise<NmapCheckResult>;
   liveScanStart: (config: LiveScanConfig) => Promise<LiveScanStartResult>;

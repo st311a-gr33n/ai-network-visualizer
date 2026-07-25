@@ -25,9 +25,8 @@ This application leverages the power of AI to automatically analyze network logs
 
 * **JSON Export:** Save your analysis as a JSON file for later review, modification, or integration into other tools.
 
-* **Flexible LLM Integration:** By default, utilizes a Local LLM through LM Studio. You can also integrate with external APIs:
-	* Gemini API (tested)
-	* OpenAI API (not yet tested – experimental support)
+* **Flexible LLM Integration:** By default, utilizes a Local LLM through LM Studio. You can also integrate with the DeepSeek API:
+	* DeepSeek API using `deepseek-v4-flash` or `deepseek-v4-pro` models
 
 * **No-AI mode:** Uses basic rules to infere possible device connections and roles.
 
@@ -143,14 +142,45 @@ We are committed to protecting your privacy and providing you with control over 
 
 ### Data Handling & Permissions:
 
-* **API Keys:** Your API key (used for AI analysis) is only visible within your browser – this is a standard, secure approach. You are solely responsible for managing your key and any associated costs.
+* **API Keys:** Your API key is stored securely using your operating system's native encryption:
+  * **Electron app:** The API key is encrypted via Electron's `safeStorage` API, which uses the OS-level credential store (Linux: libsecret/gnome-keyring, macOS: Keychain, Windows: DPAPI). The encrypted blob is stored on disk and can only be decrypted by the same OS user account.
+  * **Web version:** The API key is stored in your browser's `localStorage`. You are solely responsible for managing your key and any associated costs.
 
-* **LocalStorage (AI Settings):** The app stores your preferred AI provider and API key in your browser’s local storage. This data remains on your computer and isn't automatically transmitted to us. **However, please be aware that any malicious browser extension or script running on the same origin can potentially read this data in plain text.**
+* **LocalStorage (AI Settings):** The app stores your preferred AI provider, model selection, and server URL in your browser's local storage. This data remains on your computer and isn't transmitted to us. In the Electron app, your API key is **not** stored in localStorage — it is encrypted separately via the OS credential store (see [API Key Storage](#api-key-storage) below).
 
 * **File Upload:** When you upload a file, you grant the app explicit permission to access only that single selected file. The application cannot access any other files on your system.
 
-* **AI Analysis – Data Transmission:** When you use the AI analysis feature, the content of your uploaded file is sent to your chosen AI service (either locally via LM Studio or externally through Google/OpenAI). For local LLM usage, this data remains within your network. When using external APIs, it’s transmitted for processing. **We strongly recommend utilizing Local LLMs through LM Studio whenever possible. While we don't collect any data directly, even in a web app, the user’s API key is stored in the browser’s localStorage – making it vulnerable to potential security risks like plain text access by malicious extensions or network sniffing.**
+* **AI Analysis – Data Transmission:** When you use the AI analysis feature, the content of your uploaded file is sent to your chosen AI service (either locally via LM Studio or externally through the DeepSeek API). For local LLM usage, this data remains within your network. When using external APIs, it's transmitted for processing according to their respective privacy policies. **We strongly recommend utilizing Local LLMs through LM Studio whenever possible.**
 
 ### Transparency & Control:
 
 We strive to minimize data collection and provide you with control over how your information is used. However, please understand that the core functionality of our AI analysis relies on sending user-provided data to an external service.
+
+## API Key Storage
+
+This application takes a defense-in-depth approach to protecting your API credentials:
+
+### Electron App (Production)
+
+The API key is encrypted using Electron's built-in **`safeStorage`** API:
+
+| Component | Technology |
+|-----------|-----------|
+| **Encryption** | `safeStorage.encryptString()` — OS-level encryption |
+| **Linux** | libsecret / gnome-keyring |
+| **macOS** | Keychain Services |
+| **Windows** | DPAPI (Data Protection API) |
+| **Storage location** | `~/.config/network-visualizer/secure-storage.json` (Linux) or the OS-equivalent user data directory |
+| **On-disk format** | Base64-encoded encrypted blob — unreadable without the OS user's login credentials |
+
+The encrypted key can only be decrypted by the same OS user account that encrypted it. Even with full filesystem access, an attacker cannot recover the plaintext API key without also compromising the OS user account.
+
+Non-sensitive settings (AI provider choice, model name, server URL) remain in `localStorage` for convenience, but these contain no credentials.
+
+### Web Version & Development Mode
+
+In the browser, `safeStorage` is not available. The API key is stored in the browser's `localStorage` alongside other settings. This is the standard approach for client-side web apps, but it means the key is stored in plaintext on disk. We recommend using the Electron app for production deployments where API key security matters.
+
+### Migration
+
+When upgrading from a previous version that stored the API key in `localStorage`, the app automatically migrates the key to secure storage on first launch and scrubs it from `localStorage`. No manual steps are required.

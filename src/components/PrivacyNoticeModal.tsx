@@ -29,7 +29,7 @@ const PrivacyNoticeModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             </div>
             <div>
                 <h3 className="font-semibold text-gray-100 mb-1">AI Analysis & Data Transmission</h3>
-                <p className="text-gray-400">The core analysis feature involves sending the content of your uploaded file to your chosen AI service. <br/>- If you use a <strong className="text-accent">Local LLM</strong>, this data stays on your local network. <br/>- If you use <strong className="text-accent">Google Gemini</strong> or <strong className="text-accent">OpenAI</strong>, the data is sent to their servers for processing according to their respective privacy policies.</p>
+                <p className="text-gray-400">The core analysis feature involves sending the content of your uploaded file to your chosen AI service. <br/>- If you use a <strong className="text-accent">Local LLM</strong>, this data stays on your local network. <br/>- If you use <strong className="text-accent">DeepSeek</strong>, the data is sent to their servers for processing according to their respective privacy policies.</p>
             </div>
             <div>
                 <h3 className="font-semibold text-gray-100 mb-1">Hardware Permissions</h3>

@@ -23,7 +23,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ config, onConfigChange, o
     setCurrentConfig(prev => ({ ...prev, useAI }));
   };
 
-  const handleProviderChange = (provider: 'google' | 'openai' | 'local') => {
+  const handleProviderChange = (provider: 'deepseek' | 'local') => {
     setCurrentConfig(prev => ({ ...prev, provider }));
   };
 
@@ -35,7 +35,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ config, onConfigChange, o
     setCurrentConfig(prev => ({ ...prev, apiKey: e.target.value }));
   };
 
-  const handleModelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleModelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCurrentConfig(prev => ({ ...prev, model: e.target.value }));
   };
 
@@ -85,91 +85,52 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ config, onConfigChange, o
                 <fieldset className="space-y-4">
                     <legend className="text-sm font-medium text-gray-300 mb-2">AI Provider</legend>
 
-                    {/* Google AI Option */}
+                    {/* DeepSeek AI Option */}
                     <div>
-                        <label 
-                            htmlFor="google-ai" 
-                            className={`flex items-center p-4 rounded-md border cursor-pointer transition-colors ${currentConfig.provider === 'google' ? 'bg-accent/10 border-accent' : 'bg-gray-700/50 border-gray-600 hover:border-gray-500'}`}
+                        <label
+                            htmlFor="deepseek-api"
+                            className={`flex items-center p-4 rounded-md border cursor-pointer transition-colors ${currentConfig.provider === 'deepseek' ? 'bg-accent/10 border-accent' : 'bg-gray-700/50 border-gray-600 hover:border-gray-500'}`}
                         >
                             <input
                                 type="radio"
-                                id="google-ai"
+                                id="deepseek-api"
                                 name="ai-provider"
-                                value="google"
-                                checked={currentConfig.provider === 'google'}
-                                onChange={() => handleProviderChange('google')}
+                                value="deepseek"
+                                checked={currentConfig.provider === 'deepseek'}
+                                onChange={() => handleProviderChange('deepseek')}
                                 className="h-4 w-4 text-accent bg-gray-600 border-gray-500 focus:ring-accent"
                             />
-                            <span className="ml-3 text-sm font-medium text-gray-200">Google AI (Gemini)</span>
+                            <span className="ml-3 text-sm font-medium text-gray-200">DeepSeek API</span>
                         </label>
-                        {currentConfig.provider === 'google' && (
+                        {currentConfig.provider === 'deepseek' && (
                             <div className="mt-4 pl-8 space-y-3 animate-fade-in">
                                 <div>
-                                    <label htmlFor="google-api-key" className="text-xs font-medium text-gray-400 block mb-1">Your API Key</label>
+                                    <label htmlFor="deepseek-api-key" className="text-xs font-medium text-gray-400 block mb-1">Your API Key</label>
                                     <input
                                         type="password"
-                                        id="google-api-key"
+                                        id="deepseek-api-key"
                                         value={currentConfig.apiKey || ''}
                                         onChange={handleApiKeyChange}
                                         className="w-full bg-gray-700 border border-gray-600 text-gray-200 text-sm rounded-md p-2 focus:ring-accent focus:border-accent"
-                                        placeholder="Enter your Google AI API Key"
-                                    />
-                                </div>
-                                 <div className="text-xs text-gray-500">
-                                    <p>Your API key is stored only in your browser and is never shared.</p>
-                                    <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-accent/80 hover:text-accent underline">
-                                        Get your key from Google AI Studio.
-                                    </a>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                    
-                    {/* OpenAI Option */}
-                    <div>
-                        <label 
-                            htmlFor="openai-api" 
-                            className={`flex items-center p-4 rounded-md border cursor-pointer transition-colors ${currentConfig.provider === 'openai' ? 'bg-accent/10 border-accent' : 'bg-gray-700/50 border-gray-600 hover:border-gray-500'}`}
-                        >
-                            <input
-                                type="radio"
-                                id="openai-api"
-                                name="ai-provider"
-                                value="openai"
-                                checked={currentConfig.provider === 'openai'}
-                                onChange={() => handleProviderChange('openai')}
-                                className="h-4 w-4 text-accent bg-gray-600 border-gray-500 focus:ring-accent"
-                            />
-                            <span className="ml-3 text-sm font-medium text-gray-200">OpenAI API</span>
-                        </label>
-                        {currentConfig.provider === 'openai' && (
-                            <div className="mt-4 pl-8 space-y-3 animate-fade-in">
-                                <div>
-                                    <label htmlFor="openai-api-key" className="text-xs font-medium text-gray-400 block mb-1">Your API Key</label>
-                                    <input
-                                        type="password"
-                                        id="openai-api-key"
-                                        value={currentConfig.apiKey || ''}
-                                        onChange={handleApiKeyChange}
-                                        className="w-full bg-gray-700 border border-gray-600 text-gray-200 text-sm rounded-md p-2 focus:ring-accent focus:border-accent"
-                                        placeholder="Enter your OpenAI API Key"
+                                        placeholder="Enter your DeepSeek API Key"
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="openai-model" className="text-xs font-medium text-gray-400 block mb-1">Model Name</label>
-                                    <input
-                                        type="text"
-                                        id="openai-model"
-                                        value={currentConfig.model || 'gpt-4o'}
+                                    <label htmlFor="deepseek-model" className="text-xs font-medium text-gray-400 block mb-1">Model Name</label>
+                                    <select
+                                        id="deepseek-model"
+                                        value={currentConfig.model || 'deepseek-v4-flash'}
                                         onChange={handleModelChange}
                                         className="w-full bg-gray-700 border border-gray-600 text-gray-200 text-sm rounded-md p-2 focus:ring-accent focus:border-accent"
-                                        placeholder="e.g., gpt-4o"
-                                    />
+                                    >
+                                        <option value="deepseek-v4-flash">deepseek-v4-flash</option>
+                                        <option value="deepseek-v4-pro">deepseek-v4-pro</option>
+                                    </select>
                                 </div>
                                  <div className="text-xs text-gray-500">
                                     <p>Your API key is stored only in your browser and is never shared.</p>
-                                    <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-accent/80 hover:text-accent underline">
-                                        Get your key from OpenAI.
+                                    <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer" className="text-accent/80 hover:text-accent underline">
+                                        Get your key from DeepSeek.
                                     </a>
                                 </div>
                             </div>

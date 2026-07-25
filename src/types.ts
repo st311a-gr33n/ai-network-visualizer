@@ -27,10 +27,10 @@ export interface GraphData {
 }
 
 export type AIConfig = {
-  provider: 'google' | 'openai' | 'local';
+  provider: 'deepseek' | 'local';
   url?: string; // For local provider
-  apiKey?: string; // For google and openai providers
-  model?: string; // For openai provider
+  apiKey?: string; // For deepseek provider
+  model?: string; // For deepseek provider (defaults to "deepseek-v4-flash")
   useAI?: boolean; // When false, bypass AI and use deterministic graph conversion
 };
 

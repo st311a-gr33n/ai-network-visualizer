@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, shell, safeStorage } from 'electron';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -16,6 +16,32 @@ let mainWindow: BrowserWindow | null = null;
 let liveScanInterval: NodeJS.Timeout | null = null;
 let liveScanProcess: ChildProcess | null = null;
 let isLiveScanRunning = false;
+
+// Secure storage path (for safeStorage-encrypted data)
+let secureStoragePath: string;
+
+function getSecureStoragePath(): string {
+  if (!secureStoragePath) {
+    secureStoragePath = path.join(app.getPath('userData'), 'secure-storage.json');
+  }
+  return secureStoragePath;
+}
+
+function readSecureStorage(): Record<string, string> {
+  try {
+    if (fs.existsSync(getSecureStoragePath())) {
+      const raw = fs.readFileSync(getSecureStoragePath(), 'utf-8');
+      return JSON.parse(raw);
+    }
+  } catch {
+    // Corrupt or empty file — reset
+  }
+  return {};
+}
+
+function writeSecureStorage(data: Record<string, string>): void {
+  fs.writeFileSync(getSecureStoragePath(), JSON.stringify(data, null, 2), 'utf-8');
+}
 
 function createWindow(): void {
   // Determine icon path based on environment
@@ -116,6 +142,34 @@ ipcMain.handle('fs:readFile', async (_event, filePath: string) => {
 
 ipcMain.handle('app:getPath', (_event, name: string) => {
   return app.getPath(name as Parameters<typeof app.getPath>[0]);
+});
+
+// Secure storage handlers (safeStorage-backed encrypted persistence)
+ipcMain.handle('secure-store:set', (_event, key: string, value: string) => {
+  if (!safeStorage.isEncryptionAvailable()) {
+    throw new Error('OS-level encryption is not available on this system.');
+  }
+  const encrypted = safeStorage.encryptString(value);
+  const store = readSecureStorage();
+  store[key] = encrypted.toString('base64');
+  writeSecureStorage(store);
+});
+
+ipcMain.handle('secure-store:get', (_event, key: string) => {
+  if (!safeStorage.isEncryptionAvailable()) {
+    throw new Error('OS-level encryption is not available on this system.');
+  }
+  const store = readSecureStorage();
+  const b64 = store[key];
+  if (!b64) return null;
+  const encrypted = Buffer.from(b64, 'base64');
+  return safeStorage.decryptString(encrypted);
+});
+
+ipcMain.handle('secure-store:delete', (_event, key: string) => {
+  const store = readSecureStorage();
+  delete store[key];
+  writeSecureStorage(store);
 });
 
 // Live Scan IPC Handlers
